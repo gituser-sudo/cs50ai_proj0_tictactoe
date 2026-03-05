@@ -22,6 +22,20 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
+    # count X & O if equal X, if not equal O
+    no_X = 0
+    no_O = 0
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            if board[i, j] == 'O'
+                no_O++;
+            if board[i, j] == 'X'
+                no_X++;
+
+    if no_X > no_O
+       return 'O'
+    if no_X == no_O
+       return 'X'
     raise NotImplementedError
 
 
