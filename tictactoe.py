@@ -22,20 +22,21 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    # count X & O if equal X, if not equal O
     no_X = 0
     no_O = 0
+
     for i in range(len(board)):
         for j in range(len(board[i])):
-            if board[i, j] == O:
-                no_O = no_O + 1
-            if board[i, j] == X:
-                no_X = no_X + 1
+            if board[i][j] == O:
+                no_O += 1
+            if board[i][j] == X:
+                no_X += 1
 
     if no_X > no_O:
-       return O
+        return O
     if no_X == no_O:
-       return X
+        return X
+
     raise NotImplementedError
 
 
@@ -43,16 +44,14 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
+    actions_set = set()
 
-    actions = set()
     for i in range(len(board)):
         for j in range(len(board[i])):
-            if board[i, j] == O:
-                actions.add((i, j))
+            if board[i][j] == EMPTY:
+                actions_set.add((i, j))
 
-    return actions
-
-
+    return actions_set
 
 
 def result(board, action):
@@ -60,78 +59,55 @@ def result(board, action):
     Returns the board that results from making move (i, j) on the board.
     """
     new_board = []
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            new_board[i, j] = board[i , j]
 
-    new_board[action[0], action[1]] = player(board)
+    for i in range(len(board)):
+        new_row = []
+        for j in range(len(board[i])):
+            new_row.append(board[i][j])
+        new_board.append(new_row)
+
+    new_board[action[0]][action[1]] = player(board)
+
     return new_board
-    raise NotImplementedError
 
 
 def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    winner = EMPTY
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            if winner ==  EMPTY:
-                winner = board[i,j]
-            else:
-                if winner != board[i,j]:
-                    winner = EMPTY
-                    continue
-    if winner != EMPTY:
-        return winner
 
-    for j in range(len(board)):
-        for i in range(len(board[i])):
-            if winner ==  EMPTY:
-                winner = board[i,j]
-            else:
-                if winner != board[i,j]:
-                    winner = EMPTY
-                    continue
-    if winner != EMPTY:
-        return winner
+    # check rows
+    for i in range(3):
+        if board[i][0] == board[i][1] == board[i][2] and board[i][0] != EMPTY:
+            return board[i][0]
 
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            if winner ==  EMPTY:
-                winner = board[i,j]
-            else:
-                if winner != board[i,j]:
-                    winner = EMPTY
-                    continue
-    if winner != EMPTY:
-        return winner
+    # check columns
+    for j in range(3):
+        if board[0][j] == board[1][j] == board[2][j] and board[0][j] != EMPTY:
+            return board[0][j]
 
-    winner = board[1, 1]
-    if winner == board[0, 0] and winner != board[2,2]:
-        return winner
+    # diagonals
+    if board[0][0] == board[1][1] == board[2][2] and board[0][0] != EMPTY:
+        return board[0][0]
 
-    if winner == board[0, 2] and winner != board[2,0]:
-        return winner
+    if board[0][2] == board[1][1] == board[2][0] and board[0][2] != EMPTY:
+        return board[0][2]
 
     return EMPTY
-
-    raise NotImplementedError
 
 
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    if winner(board) != EMPTY:
+
+    if winner(board) is not EMPTY:
         return True
 
-    if actions(board) != None:
+    if len(actions(board)) == 0:
         return True
 
     return False
-
-    raise NotImplementedError
 
 
 def utility(board):
@@ -145,7 +121,6 @@ def utility(board):
         return -1
 
     return 0
-    raise NotImplementedError
 
 
 def minimax(board):
@@ -153,26 +128,17 @@ def minimax(board):
     Returns the optimal action for the current player on the board.
     """
 
-    # start with current boardcheck50 ai50/projects/2024/x/tictactoe
-    # get all new actions from current state
-    # iterate through each action iteratively
-    # when processing an action recusrsively call actions for that board
-    # the recursive call should return the minmax or maxmin for that board state
-    # depending on who is playing
-    # if tis a leaf node there is no recursive call . instead we iterate over the
-    # leaves to get the min max
-    # similarly where the branches merge will be s iteration over the branches to
-    # get min max
-
-
-    actions = actions(board)
-    max = True
+    possible_actions = actions(board)
+    is_max = True
 
     if player(board) == O:
-        max = False
-    current_value = 0;
-    for action in actions:
+        is_max = False
+
+    current_value = 0
+
+    for action in possible_actions:
         new_board = result(board, action)
+
         if winner(new_board) == X:
             return 1
         if winner(new_board) == O:
@@ -181,11 +147,9 @@ def minimax(board):
         if terminal(new_board):
             return 0
 
-        if max:
+        if is_max:
             current_value = max(current_value, minimax(new_board))
         else:
             current_value = min(current_value, minimax(new_board))
 
     return current_value
-
-    raise NotImplementedError
