@@ -62,7 +62,7 @@ def result(board, action):
     if board[action[0]][action[1]] != EMPTY:
         raise Exception("Invalid action: cell already occupied")
 
-    if action[0] < 0 or action[0] > 2 action[1] < 0 or action[1] > 2
+    if action[0] < 0 or action[0] > 2 or action[1] < 0 or action[1] > 2:
         raise Exception("Out of Bounds")
 
     new_board = []
