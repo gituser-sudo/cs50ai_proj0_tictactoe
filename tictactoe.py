@@ -58,6 +58,9 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
+
+    if board[action[0]][action[1]] != EMPTY
+        raise 
     new_board = []
 
     for i in range(len(board)):
