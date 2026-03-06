@@ -60,7 +60,8 @@ def result(board, action):
     """
 
     if board[action[0]][action[1]] != EMPTY
-        raise 
+        raise Exception
+    
     new_board = []
 
     for i in range(len(board)):
