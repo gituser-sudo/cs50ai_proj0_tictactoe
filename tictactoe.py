@@ -52,7 +52,7 @@ def actions(board):
 
     return actions
 
-    
+
 
 
 def result(board, action):
@@ -77,43 +77,43 @@ def winner(board):
     for i in range(len(board)):
         for j in range(len(board[i])):
             if winner ==  EMPTY:
-                winner = board[i,j] 
+                winner = board[i,j]
             else:
                 if winner != board[i,j]:
                     winner = EMPTY
                     continue
     if winner != EMPTY:
         return winner
-    
+
     for j in range(len(board)):
         for i in range(len(board[i])):
             if winner ==  EMPTY:
-                winner = board[i,j] 
+                winner = board[i,j]
             else:
                 if winner != board[i,j]:
                     winner = EMPTY
                     continue
     if winner != EMPTY:
-        return winner  
+        return winner
 
     for i in range(len(board)):
         for j in range(len(board[i])):
             if winner ==  EMPTY:
-                winner = board[i,j] 
+                winner = board[i,j]
             else:
                 if winner != board[i,j]:
                     winner = EMPTY
                     continue
     if winner != EMPTY:
         return winner
-    
+
     winner = board[1, 1]
     if winner == board[0, 0] and winner != board[2,2]:
         return winner
-    
+
     if winner == board[0, 2] and winner != board[2,0]:
-        return winner 
-    
+        return winner
+
     return EMPTY
 
     raise NotImplementedError
@@ -128,7 +128,7 @@ def terminal(board):
 
     if actions(board) != None:
         return True
-    
+
     return False
 
     raise NotImplementedError
@@ -143,7 +143,7 @@ def utility(board):
         return 1
     if winner(board) == O:
         return -1
-    
+
     return 0
     raise NotImplementedError
 
@@ -152,8 +152,8 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
- 
-    # start with current board
+
+    # start with current boardcheck50 ai50/projects/2024/x/tictactoe
     # get all new actions from current state
     # iterate through each action iteratively
     # when processing an action recusrsively call actions for that board
@@ -161,7 +161,7 @@ def minimax(board):
     # depending on who is playing
     # if tis a leaf node there is no recursive call . instead we iterate over the
     # leaves to get the min max
-    # similarly where the branches merge will be s iteration over the branches to 
+    # similarly where the branches merge will be s iteration over the branches to
     # get min max
 
 
@@ -177,15 +177,15 @@ def minimax(board):
             return 1
         if winner(new_board) == O:
             return -1
-        
+
         if terminal(new_board):
             return 0
-        
+
         if max:
             current_value = max(current_value, minimax(new_board))
         else:
             current_value = min(current_value, minimax(new_board))
-        
+
     return current_value
 
     raise NotImplementedError
