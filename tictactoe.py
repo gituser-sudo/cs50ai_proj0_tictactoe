@@ -147,9 +147,9 @@ def minimax(board):
         new_board = result(board, action)
 
 
-        if player(board) == X && winner(new_board) == X:
+        if player(board) == X and winner(new_board) == X:
             return 1
-        if player(board) == O && winner(new_board) == O:
+        if player(board) == O and winner(new_board) == O:
             return -1
 
         if terminal(new_board):
