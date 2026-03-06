@@ -147,10 +147,10 @@ def minimax(board):
         new_board = result(board, action)
 
 
-        if player(board) == X and winner(new_board) == X:
-            return action
-        if player(board) == O and winner(new_board) == O:
-            return action
+        if winner(new_board) == X:
+            return 1
+        if winner(new_board) == O:
+            return -1
 
         if terminal(new_board):
             return 0
