@@ -130,10 +130,20 @@ def utility(board):
     return 0
 
 
+def main():
+    print("calling minmax")
+    board = [[O, O, EMPTY],
+        [X, EMPTY, EMPTY],
+        [X, EMPTY, EMPTY]]
+    action = minimax(board)
+    print(f"Returned  {action}")
+
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
+
+
 
     possible_actions = actions(board)
     is_max = True
@@ -141,23 +151,68 @@ def minimax(board):
     if player(board) == O:
         is_max = False
 
-    current_value = 0
+    if(is_max):
+        current_value = -100
+    else:
+        current_value = 100
+
+    best_action = None
 
     for action in possible_actions:
         new_board = result(board, action)
 
 
-        if winner(new_board) == X:
+        if player(board) == X and winner(new_board) == X:
+            return action
+        if player(board) == O and winner(new_board) == O:
+            return action
+
+        if terminal(new_board):
+            return None
+
+
+        if is_max:
+            if  max(current_value, score(new_board)) > current_value:
+                current_value = max(current_value, score(new_board))
+                best_action = action
+        else:
+            if min(current_value, score(new_board)) < current_value:
+                current_value = min(current_value, score(new_board))
+                best_action = action
+
+    return best_action
+
+
+def score(board):
+
+    possible_actions = actions(board)
+    is_max = True
+
+    if player(board) == O:
+        is_max = False
+
+    if(is_max):
+        current_value = -100
+    else:
+        current_value = 100
+
+    for action in possible_actions:
+        new_board = result(board, action)
+
+        if player(board) == X and winner(new_board) == X:
             return 1
-        if winner(new_board) == O:
+        if player(board) == O and winner(new_board) == O:
             return -1
 
         if terminal(new_board):
             return 0
 
         if is_max:
-            current_value = max(current_value, minimax(new_board))
+            current_value = max(current_value, score(new_board))
         else:
-            current_value = min(current_value, minimax(new_board))
+            current_value = min(current_value, score(new_board))
 
     return current_value
+
+if __name__ == "__main__":
+    main()
